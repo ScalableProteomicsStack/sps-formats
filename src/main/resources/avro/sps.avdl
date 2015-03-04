@@ -1,0 +1,40 @@
+@namespace("org.sps.format")
+protocol SPS {
+
+    record Spectrum {
+        /**
+         An unique id for the spectrum
+         */
+        union { null, string } id;
+
+        /**
+         The MS level of the spectrum
+         */
+        union { null, int } msLevel;
+
+        /**
+         The experimental precursor m/z
+         */
+        union { null, float } precursorMz;
+
+        /**
+         The experimental precursor charge
+         */
+        union { null, int } precursorCharge;
+
+        /**
+         The experimental m/z values for all the peaks
+         */
+        array<bytes> peakMzArray;
+
+        /**
+         The experimental intensity values for all the peaks
+         */
+        array<bytes> peakIntensityArray;
+
+        /**
+         A map of key-value pairs that provide additional optional annotations
+         */
+        map<string> properties;
+    }
+}
