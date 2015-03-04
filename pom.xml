@@ -18,6 +18,20 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>rwang</id>
+            <name>Rui Wang</name>
+            <email>harry.r.wang@gmail.com</email>
+            <url>http://ruiwanguk.github.io/</url>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/ScalableProteomicsStack/sps-format/issues</url>
+    </issueManagement>
+
     <properties>
         <avro.version>1.7.4</avro.version>
     </properties>
