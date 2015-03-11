@@ -1,26 +1,24 @@
 @namespace("org.sps.format")
-protocol SPS {
 
+protocol SPS {
+    /**
+     Spectrum could be use to represent MS1, MS2.. MSn spectrum information. The current representation is similar to the Peak List format: MGF
+    **/
     record Spectrum {
         /**
-         An unique id for the spectrum
+         An unique id for the spectrum within the experiment. It could be use like the the index used
+         in the mzML files or the normal scan in the mzXML. The id sohuld be mandatory for all spectrum in order to be able to idenfied them by the algorithms.
          */
-        union { null, string } id;
+        union{null, string} id;
 
         /**
-         The MS level of the spectrum
+         The MS level of the spectrum. For spectrum MS1 (1), MS2 (2) .. MSn (n).
          */
         union { null, int } msLevel;
 
-        /**
-         The experimental precursor m/z
-         */
-        union { null, float } precursorMz;
+        /** Every spctrum can be realted with one or more precursores **/
 
-        /**
-         The experimental precursor charge
-         */
-        union { null, int } precursorCharge;
+        array<Precursor> precursors;
 
         /**
          The experimental m/z values for all the peaks
@@ -28,13 +26,30 @@ protocol SPS {
         array<bytes> peakMzArray;
 
         /**
-         The experimental intensity values for all the peaks
+         The experimental intensity values for all the peaks.
          */
         array<bytes> peakIntensityArray;
 
         /**
-         A map of key-value pairs that provide additional optional annotations
+         A map of key-value pairs that provide additional optional annotations. This annotation will help to include
+         information such as Fragmentation type, etc.
          */
         map<string> properties;
+    }
+
+    /**
+     Every Precursor realted with Spectrum object. The use of this structure will reduce the number of spectrums to be storage in the file.
+    **/
+    record Precursor {
+
+        /**
+          The experimental precursor m/z. For every spectrum we would produce a
+         */
+         array<Precursor>{ null, float } precursorMz = null;
+
+       /**
+         The experimental precursor charge
+        */
+         union { null, int } precursorCharge = null;
     }
 }
