@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.sps.sps-format</groupId>
-    <artifactId>sps-format</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <groupId>org.sps.sps-formats</groupId>
+    <artifactId>sps-formats</artifactId>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
     <name>Scalable Proteomics Stack: Apache Avro Formats</name>
 
     <licenses>
         <license>
             <name>Apache License</name>
-            <url>https://github.com/ScalableProteomicsStack/sps-format/blob/master/LICENSE</url>
+            <url>https://github.com/ScalableProteomicsStack/sps-formats/blob/master/LICENSE</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -25,11 +23,17 @@
             <email>harry.r.wang@gmail.com</email>
             <url>http://ruiwanguk.github.io/</url>
         </developer>
+        <developer>
+            <id>ypriverol</id>
+            <name>Yasset Perez-Riverol</name>
+            <email>ypriverol@gmail.com</email>
+            <url>http://computationalproteomic.blogspot.co.uk/</url>
+        </developer>
     </developers>
 
     <issueManagement>
         <system>github</system>
-        <url>https://github.com/ScalableProteomicsStack/sps-format/issues</url>
+        <url>https://github.com/ScalableProteomicsStack/sps-formats/issues</url>
     </issueManagement>
 
     <properties>
@@ -47,6 +51,11 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.avro</groupId>
                 <artifactId>avro-maven-plugin</artifactId>
@@ -69,6 +78,57 @@
         </plugins>
     </build>
 
+    <profiles>
+        <!-- Only sign artifacts when we are performing a release, not snapshots -->
+        <profile>
+            <id>sonatype-oss-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.avro</groupId>
@@ -76,5 +136,12 @@
             <version>${avro.version}</version>
         </dependency>
     </dependencies>
+
+    <scm>
+        <connection>scm:git:git@github.com:scalableproteomicsstack/sps-formats.git</connection>
+        <developerConnection>scm:git:git@github.com:scalableproteomicsstack/sps-formats.git</developerConnection>
+        <url>scm:git:git@github.com:scalableproteomicsstack/sps-formats.git</url>
+        <tag>sps-formats-0.0.1</tag>
+    </scm>
     
 </project>

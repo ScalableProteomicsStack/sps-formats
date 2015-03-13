@@ -1,13 +1,32 @@
-@namespace("org.sps.format")
+@namespace("org.sps.formats")
 
 protocol SPS {
+
+    /**
+      Every Precursor related with Spectrum object. The use of this structure will reduce the number of spectra to be storage in the file.
+     **/
+
+     record Precursor {
+          /**
+            The experimental precursor m/z. For every spectrum we would produce a
+          */
+          union { null, float } precursorMz = null;
+
+          /**
+            The experimental precursor charge
+          */
+          union { null, int } precursorCharge = null;
+    }
+
     /**
      Spectrum could be use to represent MS1, MS2.. MSn spectrum information. The current representation is similar to the Peak List format: MGF
     **/
+
     record Spectrum {
+
         /**
          An unique id for the spectrum within the experiment. It could be use like the the index used
-         in the mzML files or the normal scan in the mzXML. The id sohuld be mandatory for all spectrum in order to be able to idenfied them by the algorithms.
+         in the mzML files or the normal scan in the mzXML. The id should be mandatory for all spectrum in order to be able to idenfied them by the algorithms.
          */
         union{null, string} id;
 
@@ -16,19 +35,19 @@ protocol SPS {
          */
         union { null, int } msLevel;
 
-        /** Every spctrum can be realted with one or more precursores **/
+        /** Every spectrum can be related with one or more precursors **/
 
         array<Precursor> precursors;
 
         /**
          The experimental m/z values for all the peaks
          */
-        array<bytes> peakMzArray;
+        array<double> peakMzArray;
 
         /**
          The experimental intensity values for all the peaks.
          */
-        array<bytes> peakIntensityArray;
+        array<double> peakIntensityArray;
 
         /**
          A map of key-value pairs that provide additional optional annotations. This annotation will help to include
@@ -38,18 +57,34 @@ protocol SPS {
     }
 
     /**
-     Every Precursor realted with Spectrum object. The use of this structure will reduce the number of spectrums to be storage in the file.
-    **/
-    record Precursor {
+       A chromatogram is the relation
+     */
 
-        /**
-          The experimental precursor m/z. For every spectrum we would produce a
-         */
-         array<Precursor>{ null, float } precursorMz = null;
+    record Chromatogram{
+
+      /**
+       All the the chromatograms needs an id to be reconized in the file and also in the experiment.
+      */
+      union {null, string} id;
+      /**
+       The experimental retention time of each peak s
+       */
+
+       array<double> peakRTArray;
 
        /**
-         The experimental precursor charge
+       The experimental intensity values for all the peaks.
+       */
+
+       array<double> peakIntensityArray;
+
+       /**
+        A map of key-value pairs that provide additional optional annotations. Similar to the CVParams of in the PSI standards
+        Here in the first implementation we can add all the information related with PrecursorIsolationMethod, PrecursorIsolationWindow and
+        Metadata related.
         */
-         union { null, int } precursorCharge = null;
+       map<string> properties;
+
     }
+
 }
